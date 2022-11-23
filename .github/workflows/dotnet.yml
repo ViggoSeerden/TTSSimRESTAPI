@@ -25,4 +25,4 @@ jobs:
     - name: Build
       run: dotnet build --no-restore
     - name: Unit test
-      run: dotnet test ./TTSSimUnitTest/TTSSimUnitTests.csproj
+      run: dotnet test ./TTSSimUnitTests/TTSSimUnitTests.csproj

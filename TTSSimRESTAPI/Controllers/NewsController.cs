@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using TTSSimRESTAPI.Models;
 using TTSSimRESTAPI.Data;
 
@@ -18,6 +17,9 @@ namespace TTSSimRESTAPI.Controllers
         [HttpPost]
         public JsonResult Add(News news)
         {
+            news.Date = DateTime.Now;
+            news.Edited = false;
+
             context.News.Add(news);
             context.SaveChanges();
 
@@ -27,6 +29,9 @@ namespace TTSSimRESTAPI.Controllers
         [HttpPut]
         public JsonResult Edit(News putnews)
         {
+            putnews.Date = DateTime.Now;
+            putnews.Edited = true;
+
             var list = context.News.ToList();
             var result = new News();
 

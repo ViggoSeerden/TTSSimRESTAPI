@@ -175,5 +175,30 @@ namespace TTSSimRESTAPI.Controllers
 
             return new JsonResult(NoContent());
         }
+
+        [HttpDelete]
+        public JsonResult DeleteByName(string name)
+        {
+            var list = context.Users.ToList();
+            var result = new User();
+
+            foreach (User user in list)
+            {
+                if (user.Username == name)
+                {
+                    result = user;
+                }
+            }
+
+            if (result.Username != name)
+            {
+                return new JsonResult(NotFound());
+            }
+
+            context.Users.Remove(result);
+            context.SaveChanges();
+
+            return new JsonResult(Ok());
+        }
     }
 }

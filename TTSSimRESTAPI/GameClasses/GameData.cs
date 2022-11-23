@@ -17,5 +17,7 @@
             partyMemberData = new List<PartyMemberData>();
             currentMemberData = new List<string>();
         }
+
+        public GameData() { }
     }
 }

@@ -20,8 +20,4 @@
     <ProjectReference Include="..\TTSSimRESTAPI\TTSSimRESTAPI.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Unit\" />
-  </ItemGroup>
-
 </Project>

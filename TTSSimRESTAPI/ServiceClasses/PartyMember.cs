@@ -1,4 +1,5 @@
-﻿using System.Text.Json;
+﻿using Newtonsoft.Json;
+using System.Text.Json;
 using TTSSimRESTAPI.GameClasses;
 
 namespace TTSSimRESTAPI.ServiceClasses
@@ -7,18 +8,18 @@ namespace TTSSimRESTAPI.ServiceClasses
     {
         public static string UpdateParty(string saveData, string party)
         {
-            GameData? gameData = JsonSerializer.Deserialize<GameData>(saveData);
-            JsonData? jsonData = JsonSerializer.Deserialize<JsonData>(party);
+            GameData? gameData = JsonConvert.DeserializeObject<GameData>(saveData);
+            JsonData? jsonData = JsonConvert.DeserializeObject<JsonData>(party);
 
-            return(JsonSerializer.Serialize(gameData));
+            return(JsonConvert.SerializeObject(gameData));
         }
 
         public static string UpdateEquipment(string saveData, string json)
         {
-            GameData? gameData = JsonSerializer.Deserialize<GameData>(saveData);
-            JsonData? jsonData = JsonSerializer.Deserialize<JsonData>(json);
+            GameData? gameData = JsonConvert.DeserializeObject<GameData>(saveData);
+            JsonData? jsonData = JsonConvert.DeserializeObject<JsonData>(json);
 
-            return(JsonSerializer.Serialize(gameData));
+            return(JsonConvert.SerializeObject(gameData));
         }
     }
 }

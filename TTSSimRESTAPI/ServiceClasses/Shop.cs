@@ -1,4 +1,5 @@
-﻿using System.Text.Json;
+﻿using Newtonsoft.Json;
+using System.Text.Json;
 using TTSSimRESTAPI.GameClasses;
 
 namespace TTSSimRESTAPI.ServiceClasses
@@ -7,8 +8,8 @@ namespace TTSSimRESTAPI.ServiceClasses
     {
         public static string BuyItems(string saveData, string items)
         {
-            GameData? gameData = JsonSerializer.Deserialize<GameData>(saveData);
-            JsonData? jsonData = JsonSerializer.Deserialize<JsonData>(items);
+            GameData? gameData = JsonConvert.DeserializeObject<GameData>(saveData);
+            JsonData? jsonData = JsonConvert.DeserializeObject<JsonData>(items);
 
             bool exists = false;
             foreach (ItemData itemdata in gameData.itemData)
@@ -32,13 +33,13 @@ namespace TTSSimRESTAPI.ServiceClasses
                 gameData.playerData.yen -= jsonData.price * jsonData.amount;
             }
 
-            return(JsonSerializer.Serialize(gameData));
+            return(JsonConvert.SerializeObject(gameData));
         }
 
         public static string SellItems(string saveData, string items)
         {
-            GameData? gameData = JsonSerializer.Deserialize<GameData>(saveData);
-            JsonData? jsonData = JsonSerializer.Deserialize<JsonData>(items);
+            GameData? gameData = JsonConvert.DeserializeObject<GameData>(saveData);
+            JsonData? jsonData = JsonConvert.DeserializeObject<JsonData>(items);
 
             foreach (ItemData itemdata in gameData.itemData.ToArray())
             {
@@ -56,7 +57,7 @@ namespace TTSSimRESTAPI.ServiceClasses
                 }
             }
 
-            return(JsonSerializer.Serialize(gameData));
+            return(JsonConvert.SerializeObject(gameData));
         }
     }
 }

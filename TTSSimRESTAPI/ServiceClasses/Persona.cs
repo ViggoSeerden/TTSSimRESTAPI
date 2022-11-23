@@ -1,4 +1,5 @@
-﻿using System.Text.Json;
+﻿using Newtonsoft.Json;
+using System.Text.Json;
 using TTSSimRESTAPI.GameClasses;
 
 namespace TTSSimRESTAPI.ServiceClasses
@@ -7,8 +8,8 @@ namespace TTSSimRESTAPI.ServiceClasses
     {
         public static string FusePersona(string saveData, string json)
         {
-            GameData? gameData = JsonSerializer.Deserialize<GameData>(saveData);
-            JsonData? jsonData = JsonSerializer.Deserialize<JsonData>(json);
+            GameData? gameData = JsonConvert.DeserializeObject<GameData>(saveData);
+            JsonData? jsonData = JsonConvert.DeserializeObject<JsonData>(json);
 
             foreach (DemonData demonData in gameData.demonData)
             {
@@ -63,21 +64,21 @@ namespace TTSSimRESTAPI.ServiceClasses
                 }
             }
 
-            return(JsonSerializer.Serialize(gameData));
+            return(JsonConvert.SerializeObject(gameData));
         }
 
         public static string SacrificePersona(string saveData, string json)
         {
-            GameData? gameData = JsonSerializer.Deserialize<GameData>(saveData);
-            JsonData? jsonData = JsonSerializer.Deserialize<JsonData>(json);
+            GameData? gameData = JsonConvert.DeserializeObject<GameData>(saveData);
+            JsonData? jsonData = JsonConvert.DeserializeObject<JsonData>(json);
 
-            return (JsonSerializer.Serialize(gameData));
+            return (JsonConvert.SerializeObject(gameData));
         }
 
         public static string RemoveSkills(string saveData, string json)
         {
-            GameData? gameData = JsonSerializer.Deserialize<GameData>(saveData);
-            JsonData? jsonData = JsonSerializer.Deserialize<JsonData>(json);
+            GameData? gameData = JsonConvert.DeserializeObject<GameData>(saveData);
+            JsonData? jsonData = JsonConvert.DeserializeObject<JsonData>(json);
 
             foreach (DemonData demonData in gameData.demonData)
             {
@@ -91,7 +92,7 @@ namespace TTSSimRESTAPI.ServiceClasses
                 }
             }
 
-            return (JsonSerializer.Serialize(gameData));
+            return (JsonConvert.SerializeObject(gameData));
         }
 
 

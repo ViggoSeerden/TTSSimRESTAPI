@@ -49,7 +49,7 @@ jobs:
           .\.sonar\scanner\dotnet-sonarscanner begin /k:"ViggoSeerden_TTSSimRESTAPI" /o:"viggoseerden" /d:sonar.login="${{ secrets.SONAR_TOKEN }}" /d:sonar.host.url="https://sonarcloud.io" /d:sonar.cs.vscoveragexml.reportsPaths=coverage.xml
           dotnet restore
           dotnet build --no-restore
-          dotnet-coverage collect 'dotnet test ./TTSSimUnitTests/TTSSimUnitTests.csproj' -f xml  -o 'coverage.xml'
+          dotnet-coverage collect 'dotnet test' -f xml  -o 'coverage.xml'
           .\.sonar\scanner\dotnet-sonarscanner end /d:sonar.login="${{ secrets.SONAR_TOKEN }}"
 #   build:
 

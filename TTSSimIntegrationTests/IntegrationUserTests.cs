@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Testing;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Newtonsoft.Json;
 using System;
@@ -7,6 +8,8 @@ using System.Collections.Generic;
 using System.Net.Http;
 using System.Net.Http.Json;
 using System.Threading.Tasks;
+using TTSSimIntegrationTests;
+using TTSSimRESTAPI.Data;
 using TTSSimRESTAPI.Models;
 
 namespace TTSSim.Test
@@ -15,17 +18,30 @@ namespace TTSSim.Test
     public class IntegrationUserTests
     {
         private HttpClient client;
-    
+
         public IntegrationUserTests()
         {
-            var factory = new WebApplicationFactory<Program>();
-            client = factory.CreateClient();
+            //var factory = new WebApplicationFactory<Program>();
+            var factory = new MockFactory();
+            using (var scope = factory.Services.CreateScope())
+            {
+                var provider = scope.ServiceProvider;
+                using (var APIContext = provider.GetRequiredService<APIContext>())
+                {
+                    APIContext.Database.EnsureCreatedAsync();
+
+                    APIContext.Users.AddAsync(new User { Username = "oggiVAdmin", Id = 1 });
+                    APIContext.Users.AddAsync(new User { Username = "oggiVUser", Id = 2 });
+                    APIContext.SaveChangesAsync();
+                }
+                client = factory.CreateClient();
+            }
         }
 
         [TestMethod]
-        public async Task Test_GetoggiVAdmin()
+        public async Task Test5_GetoggiVAdmin()
         {
-            var response = await client.GetAsync("/api/User/Get?id=2");
+            var response = await client.GetAsync("/api/User/Get?id=1");
             var responsestring = await response.Content.ReadAsStringAsync();
 
             response.EnsureSuccessStatusCode();
@@ -33,18 +49,18 @@ namespace TTSSim.Test
         }
 
         [TestMethod]
-        public async Task Test_GetAllUsers()
+        public async Task Test2_GetAllUsers()
         {
             var response = await client.GetAsync("/api/User/GetAll");
             var responsestring = await response.Content.ReadAsStringAsync();
 
             response.EnsureSuccessStatusCode();
             Assert.IsTrue(responsestring.Contains("oggiVAdmin"));
-            //Assert.IsTrue(responsestring.Contains("oggiVUser"));
+            Assert.IsTrue(responsestring.Contains("oggiVUser"));
         }
 
         [TestMethod]
-        public async Task Test_GetNonExistingUser()
+        public async Task Test3_GetNonExistingUser()
         {
             var response = await client.GetAsync("/api/User/Get?id=-1");
             var responsestring = await response.Content.ReadAsStringAsync();
@@ -56,10 +72,10 @@ namespace TTSSim.Test
         public static int TestUserId;
 
         [TestMethod]
-        public async Task Test_AddUser()
+        public async Task Test1_AddUser()
         {
             User user = new User()
-            { 
+            {
                 Username = "thisismorethan20characters",
                 UserType = 0,
                 Token = "0"
@@ -71,24 +87,23 @@ namespace TTSSim.Test
             var response = await client.PostAsync("/api/User/Add", content);
             string responsestring = await response.Content.ReadAsStringAsync();
 
-            TestUserId = Convert.ToInt32(responsestring.Substring(15, 15).Substring(0, 4));
+            TestUserId = Convert.ToInt32(responsestring.Substring(15, 15).Substring(0, 1));
 
             response.EnsureSuccessStatusCode();
-            Assert.IsTrue(responsestring.Contains("thisismorethan20characters"));          
+            Assert.IsTrue(responsestring.Contains("thisismorethan20characters"));
         }
 
         [TestMethod]
-        public async Task Test_DeleteUser()
+        public async Task Test4_DeleteUser()
         {
-            var response = await client.DeleteAsync("/api/User/Delete?id=" + TestUserId);
+            var response = await client.DeleteAsync("/api/User/Delete?id=2");
             var responsestring = await response.Content.ReadAsStringAsync();
 
             response.EnsureSuccessStatusCode();
-            Assert.IsTrue(responsestring.Contains("204"));
         }
-        
+
         [TestMethod]
-        public async Task Test_DeleteNonExistingUser()
+        public async Task Test6_DeleteNonExistingUser()
         {
             var response = await client.DeleteAsync("/api/User/Delete?id=-1");
             var responsestring = await response.Content.ReadAsStringAsync();

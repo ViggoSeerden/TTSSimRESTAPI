@@ -39,6 +39,7 @@ namespace TTSSim.Test
             };
             string gamedatastring = JsonConvert.SerializeObject(gameData);
             string jsonstring = JsonConvert.SerializeObject(jsonData);
+
             string editedsavedata = Shop.BuyItems(gamedatastring, jsonstring);
             GameData? newData = JsonConvert.DeserializeObject<GameData>(editedsavedata);
 
@@ -66,6 +67,7 @@ namespace TTSSim.Test
             };
             string gamedatastring = JsonConvert.SerializeObject(gameData);
             string jsonstring = JsonConvert.SerializeObject(jsonData);
+
             string editedsavedata = Shop.BuyItems(gamedatastring, jsonstring);
             GameData? newData = JsonConvert.DeserializeObject<GameData>(editedsavedata);
 
@@ -99,6 +101,7 @@ namespace TTSSim.Test
             };
             string gamedatastring = JsonConvert.SerializeObject(gameData);
             string jsonstring = JsonConvert.SerializeObject(jsonData);
+
             string editedsavedata = Shop.SellItems(gamedatastring, jsonstring);
             GameData? newData = JsonConvert.DeserializeObject<GameData>(editedsavedata);
 
@@ -132,6 +135,7 @@ namespace TTSSim.Test
             };
             string gamedatastring = JsonConvert.SerializeObject(gameData);
             string jsonstring = JsonConvert.SerializeObject(jsonData);
+
             string editedsavedata = Shop.SellItems(gamedatastring, jsonstring);
             GameData? newData = JsonConvert.DeserializeObject<GameData>(editedsavedata);
 

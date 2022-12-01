@@ -1,6 +1,8 @@
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Net.Http;
 using System.Net.Http.Json;
@@ -50,7 +52,9 @@ namespace TTSSim.Test
             response.EnsureSuccessStatusCode();
             Assert.IsTrue(responsestring.Contains("404"));
         }
-        
+
+        public static int TestUserId;
+
         [TestMethod]
         public async Task Test_AddUser()
         {
@@ -65,20 +69,22 @@ namespace TTSSim.Test
             content.Headers.ContentType = new System.Net.Http.Headers.MediaTypeHeaderValue("application/json");
 
             var response = await client.PostAsync("/api/User/Add", content);
-            var responsestring = await response.Content.ReadAsStringAsync();
+            string responsestring = await response.Content.ReadAsStringAsync();
+
+            TestUserId = Convert.ToInt32(responsestring.Substring(15, 15).Substring(0, 4));
 
             response.EnsureSuccessStatusCode();
-            Assert.IsTrue(responsestring.Contains("thisismorethan20characters"));
+            Assert.IsTrue(responsestring.Contains("thisismorethan20characters"));          
         }
 
         [TestMethod]
         public async Task Test_DeleteUser()
         {
-            var response = await client.DeleteAsync("/api/User/DeleteByName?name=thisismorethan20characters");
+            var response = await client.DeleteAsync("/api/User/Delete?id=" + TestUserId);
             var responsestring = await response.Content.ReadAsStringAsync();
 
             response.EnsureSuccessStatusCode();
-            Assert.IsTrue(responsestring.Contains("200"));
+            Assert.IsTrue(responsestring.Contains("204"));
         }
         
         [TestMethod]
